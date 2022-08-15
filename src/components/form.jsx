@@ -4,18 +4,39 @@ import Meme from './meme'
 
 function Form() {
 
-    const [memeUrl, setMemeUrl] = React.useState('')
+    const [meme, setMeme] = React.useState({
+        topLine : 'Top line',
+        bottomLine : 'Bottom Line', 
+        imgUrl : 'https://i.imgflip.com/30b1gx.jpg'
+    })
 
-    function generateRandomUrl(e) {
 
-        e.preventDefault()
-        const memeDataArray = memeData.data.memes
-        const randomIndex = Math.floor(Math.random() * memeDataArray.length)
-        const randomMemeUrl = memeDataArray[randomIndex].url
-        
-        setMemeUrl(randomMemeUrl)
+    function generateMeme() {
+
+        const topLineInput = document.getElementById('top-line-input')
+        const bottomLineInput = document.getElementById('bottom-line-input')
+
+        setMeme(prevMeme => {
+            return {
+                ...prevMeme,
+                topLine : topLineInput.value,
+                bottomLine: bottomLineInput.value,
+                imgUrl : getRandomImgUrl()
+            }
+        })
 
     }
+
+
+    function getRandomImgUrl() {
+
+        const memeDataArray = memeData.data.memes
+        const randomIndex = Math.floor(Math.random() * memeDataArray.length)
+        return memeDataArray[randomIndex].url
+
+    }
+
+
 
     return(
         <div>
@@ -24,16 +45,19 @@ function Form() {
             <div className="form-line">
                 
                 <label htmlFor="">Second Line
-                    <input type="text" name="first-line-input" id="first-line-input"/>
+                    <input type="text" name="top-line-input" id="top-line-input"/>
                 </label>
                     
                     <label htmlFor="">First Line
-                        <input type="text" name="second-line-input" id="second-line-input"/>
+                        <input type="text" name="bottom-line-input" id="bottom-line-input"/>
                     </label>
             </div>
-            <button type="button" onClick={generateRandomUrl}>Generate</button>
+            <button type="button" onClick={generateMeme}>Generate</button>
         </form>
-        <Meme imgUrl={memeUrl} />
+        <Meme 
+        imgUrl={meme.imgUrl}
+        topLine = {meme.topLine}
+        bottomLine = {meme.bottomLine} />
         </div>
     )
 
