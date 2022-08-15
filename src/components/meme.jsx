@@ -1,12 +1,10 @@
 import React from 'react'
-import Form from './form'
 
 
-function Meme() {
+function Meme(props) {
     return(
         <div id="meme-generator">
-            <Form />
-            <img src="https://source.unsplash.com/random/300×300/" id="meme-image"/>
+            <img src={props.imgUrl} id="meme-image"/>
         </div>
     )
 }
