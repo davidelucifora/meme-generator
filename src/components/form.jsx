@@ -5,22 +5,32 @@ import Meme from './meme'
 function Form() {
 
     const [meme, setMeme] = React.useState({
-        topLine : 'Top line',
-        bottomLine : 'Bottom Line', 
+        topLine : '',
+        bottomLine : '', 
         imgUrl : 'https://i.imgflip.com/30b1gx.jpg'
     })
 
 
-    function generateMeme() {
 
-        const topLineInput = document.getElementById('top-line-input')
-        const bottomLineInput = document.getElementById('bottom-line-input')
+    function updateTextOnChange(e) {
+
+        const {name, value} = e.target 
 
         setMeme(prevMeme => {
             return {
                 ...prevMeme,
-                topLine : topLineInput.value,
-                bottomLine: bottomLineInput.value,
+                [name]: value
+            }
+        })
+
+    }
+
+    function generateMeme(e) {
+
+
+        setMeme(prevMeme => {
+            return {
+                ...prevMeme,
                 imgUrl : getRandomImgUrl()
             }
         })
@@ -45,15 +55,16 @@ function Form() {
             <div className="form-line">
                 
                 <label htmlFor="">Second Line
-                    <input type="text" name="top-line-input" id="top-line-input"/>
+                    <input type="text" name="topLine" id="top-line-input" onChange={updateTextOnChange}/>
                 </label>
                     
                     <label htmlFor="">First Line
-                        <input type="text" name="bottom-line-input" id="bottom-line-input"/>
+                        <input type="text" name="bottomLine" id="bottom-line-input" onChange={updateTextOnChange}/>
                     </label>
             </div>
             <button type="button" onClick={generateMeme}>Generate</button>
         </form>
+        
         <Meme 
         imgUrl={meme.imgUrl}
         topLine = {meme.topLine}
