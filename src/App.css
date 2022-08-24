@@ -86,12 +86,12 @@ form#generator-form button{
   font-size:4rem;
 }
 
-.meme-top-line {
+.meme-bottom-line {
   margin-bottom:-4.2rem;
  
 
 }
 
-.meme-bottom-line{
+.meme-top-line{
   margin-top:-4.2rem;
 }

@@ -1,5 +1,4 @@
 import React from 'react'
-import memeData from './../memeData'
 import Meme from './meme'
 
 function Form() {
@@ -7,9 +6,20 @@ function Form() {
     const [meme, setMeme] = React.useState({
         topLine : '',
         bottomLine : '', 
-        imgUrl : 'https://i.imgflip.com/30b1gx.jpg'
+        imgUrl : ''
     })
 
+    const [allMemes, setAllMemes] = React.useState([])
+
+    React.useEffect(() => {
+        fetch("https://api.imgflip.com/get_memes")
+        .then(res => res.json())
+        .then (data => {
+            const allMemes = data.data.memes
+            setAllMemes(allMemes)
+            console.log(allMemes)
+        })
+    },[])
 
 
     function updateTextOnChange(e) {
@@ -19,33 +29,23 @@ function Form() {
         setMeme(prevMeme => {
             return {
                 ...prevMeme,
-                [name]: value
+                [name]: value,
             }
         })
 
     }
 
-    function generateMeme(e) {
+    function generateMeme() {
 
 
+        const randomMeme = allMemes[Math.floor(Math.random() * allMemes.length)]
+   
         setMeme(prevMeme => {
             return {
-                ...prevMeme,
-                imgUrl : getRandomImgUrl()
-            }
+            ...prevMeme,
+            imgUrl: randomMeme.url}
         })
-
     }
-
-
-    function getRandomImgUrl() {
-
-        const memeDataArray = memeData.data.memes
-        const randomIndex = Math.floor(Math.random() * memeDataArray.length)
-        return memeDataArray[randomIndex].url
-
-    }
-
 
 
     return(
@@ -54,15 +54,16 @@ function Form() {
 
             <div className="form-line">
                 
-                <label htmlFor="">Second Line
-                    <input type="text" name="topLine" id="top-line-input" onChange={updateTextOnChange}/>
+                <label htmlFor="">First Line
+                    <input type="text" name="topLine" id="top-line-input" onChange={updateTextOnChange} />
                 </label>
                     
-                    <label htmlFor="">First Line
-                        <input type="text" name="bottomLine" id="bottom-line-input" onChange={updateTextOnChange}/>
+                    <label htmlFor="">Second Line
+                        <input type="text" name="bottomLine" id="bottom-line-input" onChange={updateTextOnChange} />
                     </label>
             </div>
-            <button type="button" onClick={generateMeme}>Generate</button>
+            <button type="button" onClick={generateMeme} >Generate</button>
+            
         </form>
         
         <Meme 
